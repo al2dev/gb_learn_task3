@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Задание 3</title>
+
+        <script type="text/javascript">
+
+            // FUNCTIONS OF 1 BLOCK
+
+            // Функция возвращает последовательный массив задной длинны вида [1, 2, 3, n]
+            function getArray(len) {
+                
+                // Создаем пустой массив
+                var arr = [];
+                
+                // Циклом заполняем массив с конца в начало
+                while (len > 0) {
+                    arr[len-1] = len;
+                    len--;
+                }
+
+                // Возвращаем результат
+                return arr;
+                
+            }
+
+            // Функция возвращает сумму массива, сумму масива массивов, сумму массива массивов массивов и т. д.
+            function getSumArray(...args) {
+
+                var result = 0;
+
+                args.forEach(function (element) {
+                    element.forEach(function (el) {
+                        if(Array.isArray(el)) {
+                            result += getSumArray(el);
+                        }
+                        else {
+                            result += parseInt(el);
+                        }
+                    });  
+                });
+
+                return result;
+            }
+
+            function getMaxVal(arr) {
+                return Math.max.apply(Math, arr);
+            }
+
+            function getMinVal(arr) {
+                return Math.min.apply(Math, arr);
+            }
+
+            function getEvenArray(arr) {
+                var result = [];
+                arr.forEach(element => (element % 2) ? (null) : (result.push(element)));
+                return result;
+            }
+
+            // FUNCTIONS OF 2 BLOCK
+
+            function generateText(arr, len) {
+                var result = '';
+                while(len > 0) {
+                    var rand = parseInt(Math.random() * arr.length);
+                    result += arr[rand];
+                    len--;
+                }
+                return result;
+            }
+
+            function levelGame(msg, quest) {
+                alert(msg);
+                return prompt(quest);
+            }
+
+            function startGame(levels, engine) {
+                levels.forEach(engine);
+            }
+
+            function gamePrinting() {
+
+                const levels = [
+                    ["Положите 4 пальца левой руки - мезинец, безымянный, средний и указательный - на клавиши ф, ы, в, а. Запомните, что буква А находится под вашим указательным пальцем, а Ф - под мизинцем.\nТеперь неспеша набирайте текст. Постарайтесь не смотреть на клавиатуру.", ["Ф", "А"], 10],
+                    ["Поставьте ​​мизинец ​​левой ​​руки ​​на ​​букву Ф, ​​безымянный ​​палец​ ​- ​​на ​​Ы, ​​средний​​ - ​​на ​​В,​​ указательный​​ -​ ​на ​​А. ​​Мизинец​​ правой руки​​ на ​​букву ​​Ж,​​ безымянный​​ палец​​ - ​​на ​​Д, ​​средний​​ - ​​на ​​Л,​​ указательный​​ -​​ на​​ О Запомните​​ расположение​​ пальцев..​​ А​​ теперь,​​ повторяйте​​з а​​ мной.", ["Ы", "В"], 10],
+                    ["Поставьте ​​мизинец ​​левой ​​руки ​​на ​​букву Ф, ​​безымянный ​​палец​ ​- ​​на ​​Ы, ​​средний​​ - ​​на ​​В,​​ указательный​​ -​ ​на ​​А. ​​Мизинец​​ правой руки​​ на ​​букву ​​Ж,​​ безымянный​​ палец​​ - ​​на ​​Д, ​​средний​​ - ​​на ​​Л,​​ указательный​​ -​​ на​​ О Запомните​​ расположение​​ пальцев..​​ А​​ теперь,​​ повторяйте​​з а​​ мной.", ["О", "Ж"], 10],
+                ];
+
+                var engine = function (level, index, arr) {
+                    while(true) {
+                        var quest = generateText(level[1], level[2]).toLowerCase();
+                        var user_string = levelGame(level[0], quest).toLowerCase();
+                        if(user_string == quest) {
+                            (arr.length - 1 == index) ? (null) : (alert('Отлично! Идем дальше!'));
+                            break;
+                        } else {
+                            alert('Где то ошибка, попробуй еще раз..');
+                        }
+                    }
+                }
+
+                startGame(levels, engine);
+
+                alert('Ты прошел все уровни! Поздравляю!');
+
+            }
+
+            // FUNCTIONS OF 3 BLOCK
+
+            var count_answers;
+
+            function gameQuests() {
+                
+                count_answers = 0;
+
+                const levels = [
+                    ["Течет-течет — Не вытечет, Бежит-бежит — Не выбежит", ["река", "речка", "речушка"]],
+                    ["Красна девица Сидит в темнице, А коса на улице.", ["морковь", "морковка", "морковень"]],
+                    ["Без рук, без топоренка, построена избенка.", ["гнездо", "гнездышко", "гнездень"]],
+                    ["Кто ни в жару, ни в стужу Не снимает шубу?", ["баран", "барашек", "овца", "овечка"]]
+                ];
+
+                var engine = function (level, index, arr) {
+                    var user_answer = levelGame(level[0], 'Введите ответ: ').toLowerCase();
+
+                    if(level[1].includes(user_answer)) {
+                        if (index == 0) {
+                            alert("Отлично! Ответ правильный!");
+                            return;
+                        }
+                        alert("Ответ верный!"); 
+                        count_answers++;
+                    } else {
+                        alert('Ответ неверный! Правильный ответ: ' + level[1]);
+                    }
+                }
+
+                startGame(levels, engine);
+
+                alert("Игра закончена! Правильных ответов: " + count_answers);
+            }
+
+            // INCLUDE FUNCTION TO BUTTON BEFORE LOAD HTML
+
+            window.onload = function() {
+
+                // 1 block
+
+                document.getElementById('btn_get').addEventListener("click", function () {
+                    var size = +prompt('Введите размер массива:');
+                    var arr = getArray(size);
+                    alert('Массив: ' + arr);
+                });
+              
+                document.getElementById('btn_sum').addEventListener("click", function () {
+                    var multiarr = JSON.parse(prompt('Введите любой мультимассив чисел ( [1, [2, 3, [4], 5], 6] ): '));
+                    var sum = getSumArray(multiarr);
+                    alert('Сумма мультимассива: ' + sum);
+                });
+
+                document.getElementById('btn_max').addEventListener("click", function () {
+                    var arr = JSON.parse(prompt('Введите любой массив чисел ( [1, 2, 3, 4, 5, 6] ): '));
+                    var max_val = getMaxVal(arr);
+                    alert('Максимальное число: ' + max_val);
+                });
+
+                document.getElementById('btn_min').addEventListener("click", function () {
+                    var arr = JSON.parse(prompt('Введите любой массив чисел ( [1, 2, 3, 4, 5, 6] ): '));
+                    var min_val = getMinVal(arr);
+                    alert('Минимальное число: ' + min_val);
+                });
+
+                document.getElementById('btn_even').addEventListener("click", function () {
+                    var arr = JSON.parse(prompt('Введите любой массив чисел ( [1, 2, 3, 4, 5, 6] ): '));
+                    var even_arr = getEvenArray(arr);
+                    alert('Только четные числа: ' + even_arr);
+                });
+
+                // 2 block
+
+                document.getElementById('btn_start_printing').addEventListener("click", function () {
+                    alert('Добро пожаловать в программу обучения слепой печати, приступим.');
+                    gamePrinting();
+                });
+
+                // 3 block
+
+                document.getElementById('btn_start_game').addEventListener("click", function () {
+                    alert('Начнем игру...');
+                    gameQuests();
+                });
+
+            }
+
+        </script>
+    </head>
+
+    <body>
+        <div style="display: block; text-align: center;">
+            <hr>
+                <h2>1. Функции​​ для ​​работы​​ с​​ массивами</h2>
+                <button id="btn_get">Получить массив</button>
+                <button id="btn_sum">Получить сумму</button>
+                <button id="btn_max">Получить максимальное число</button>
+                <button id="btn_min">Получить минимальное число</button>
+                <button id="btn_even">Получить четные числа</button>
+            <hr>
+                <h2>2. Слепая печать</h2>
+                <button id="btn_start_printing">Начать!</button>
+            <hr>
+                <h2>3. Игра загадки</h2>
+                <button id="btn_start_game">Начать!</button>
+            <hr>
+        </div>
+
+    </body>
+</html>
